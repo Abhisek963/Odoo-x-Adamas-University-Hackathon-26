@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const Employee = require('../models/Employee');
 const { generateEmployeeId } = require('../utils/generateEmployeeId');
 const { generateTemporaryPassword } = require('../utils/generateTemporaryPassword');
 const getNextEmployeeSerial = require('../utils/getNextEmployeeSerial');
@@ -68,6 +69,17 @@ async function createEmployee(req, res, next) {
     });
 
     await newUser.save();
+
+    // Create the associated Employee profile document
+    const newEmployee = new Employee({
+      employeeId,
+      firstName,
+      lastName,
+      personalEmail: trimmedEmail,
+      jobTitle: role === 'hr' ? 'HR Manager' : 'Software Engineer',
+      department: role === 'hr' ? 'Human Resources' : 'Engineering'
+    });
+    await newEmployee.save();
 
     // 7. Return successful response containing the plain temporary password (only returned once)
     // Never return the hashed password

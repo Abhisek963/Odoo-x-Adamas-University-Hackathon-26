@@ -70,3 +70,43 @@ export const authAPI = {
     });
   },
 };
+
+export const employeeAPI = {
+  /**
+   * Fetches the current logged in employee's profile
+   */
+  getProfile: (token) => {
+    return request('/employee/profile', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
+
+  /**
+   * Updates allowed profile fields
+   */
+  updateProfile: (profileData, token) => {
+    return request('/employee/profile', {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(profileData),
+    });
+  },
+
+  /**
+   * Fetches the current logged-in employee's calculated salary
+   */
+  getSalary: (token) => {
+    return request('/employee/salary', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
+};
+
