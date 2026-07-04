@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { employeeAPI, authAPI } from '../services/api';
 import './EmployeeDashboard.css';
 
 export default function EmployeeDashboard() {
   const { user, token, logout } = useAuth();
+  const navigate = useNavigate();
   
   // Navigation & Sub-navigation Tabs State
   const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard', 'profile', 'salary', 'documents'
@@ -323,6 +325,9 @@ export default function EmployeeDashboard() {
           </button>
           <button className={`subnav-tab ${activeTab === 'documents' ? 'active' : ''}`} onClick={() => setActiveTab('documents')}>
             Documents
+          </button>
+          <button className="subnav-tab text-glow" onClick={() => navigate('/employee/leaves')}>
+            Leave Requests 🚀
           </button>
         </nav>
 

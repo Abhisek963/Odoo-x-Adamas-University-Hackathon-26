@@ -110,3 +110,88 @@ export const employeeAPI = {
   },
 };
 
+export const leaveAPI = {
+  /**
+   * Submits a new leave request
+   */
+  applyLeave: (leaveData, token) => {
+    return request('/leaves', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(leaveData),
+    });
+  },
+
+  /**
+   * Fetches the personal leave history of the logged in user
+   */
+  getMyLeaves: (token, status) => {
+    const query = status ? `?status=${status}` : '';
+    return request(`/leaves/my${query}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
+
+  /**
+   * Cancels a pending leave request
+   */
+  cancelLeave: (id, token) => {
+    return request(`/leaves/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
+
+  /**
+   * HR Only: Fetches all leave requests with filters
+   */
+  getAllLeaves: (token, filters = {}) => {
+    const { status, leaveType, employeeId } = filters;
+    const params = [];
+    if (status) params.push(`status=${status}`);
+    if (leaveType) params.push(`leaveType=${leaveType}`);
+    if (employeeId) params.push(`employeeId=${employeeId}`);
+    const query = params.length > 0 ? `?${params.join('&')}` : '';
+
+    return request(`/leaves${query}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  },
+
+  /**
+   * HR Only: Approves a pending leave request
+   */
+  approveLeave: (id, reviewComment, token) => {
+    return request(`/leaves/${id}/approve`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ reviewComment }),
+    });
+  },
+
+  /**
+   * HR Only: Rejects a pending leave request
+   */
+  rejectLeave: (id, reviewComment, token) => {
+    return request(`/leaves/${id}/reject`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ reviewComment }),
+    });
+  },
+};
+

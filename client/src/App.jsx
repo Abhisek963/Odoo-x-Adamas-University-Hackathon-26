@@ -6,6 +6,8 @@ import Login from './pages/Login';
 import ChangePassword from './pages/ChangePassword';
 import EmployeeDashboard from './pages/EmployeeDashboard';
 import HrDashboard from './pages/HrDashboard';
+import EmployeeLeaves from './pages/EmployeeLeaves';
+import HrLeaves from './pages/HrLeaves';
 import './App.css';
 
 function App() {
@@ -38,6 +40,18 @@ function App() {
             } 
           />
 
+          {/* Protected Employee Leaves Route */}
+          <Route 
+            path="/employee/leaves" 
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['employee', 'hr']}>
+                  <EmployeeLeaves />
+                </RoleRoute>
+              </ProtectedRoute>
+            } 
+          />
+
           {/* Protected HR Manager Routes */}
           <Route 
             path="/hr" 
@@ -45,6 +59,18 @@ function App() {
               <ProtectedRoute>
                 <RoleRoute allowedRoles={['hr']}>
                   <HrDashboard />
+                </RoleRoute>
+              </ProtectedRoute>
+            } 
+          />
+
+          {/* Protected HR Leaves Route */}
+          <Route 
+            path="/hr/leaves" 
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['hr']}>
+                  <HrLeaves />
                 </RoleRoute>
               </ProtectedRoute>
             } 

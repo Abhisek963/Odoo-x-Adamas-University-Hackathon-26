@@ -6,6 +6,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const employeeRoutes = require('./routes/employeeRoutes');
+const leaveRoutes = require('./routes/leaveRoutes');
 
 // Initialize the Express application
 const app = express();
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 // Register auth routes
 app.use('/api/auth', authRoutes);
 app.use('/api/employee', employeeRoutes);
+app.use('/api/leaves', leaveRoutes);
 
 // GET /api/test - Endpoint to verify the backend is running
 app.get('/api/test', (req, res) => {
