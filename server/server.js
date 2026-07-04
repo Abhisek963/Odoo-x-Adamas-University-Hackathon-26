@@ -4,6 +4,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
+const authRoutes = require('./routes/authRoutes');
 
 // Initialize the Express application
 const app = express();
@@ -24,6 +25,9 @@ app.use(express.json());
 
 // Middleware to parse incoming requests with URL-encoded payloads
 app.use(express.urlencoded({ extended: true }));
+
+// Register auth routes
+app.use('/api/auth', authRoutes);
 
 // GET /api/test - Endpoint to verify the backend is running
 app.get('/api/test', (req, res) => {
