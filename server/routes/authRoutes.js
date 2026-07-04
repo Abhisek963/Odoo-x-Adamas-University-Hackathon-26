@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { createEmployee, login } = require('../controllers/authController');
+const { createEmployee, login, changePassword } = require('../controllers/authController');
+const { protect, authorizeRoles } = require('../middleware/authMiddleware');
 
-// TODO: This endpoint is temporarily unprotected to allow testing in this milestone.
-// MUST be protected by authentication and HR authorization (role checking) middleware in the next milestone.
-router.post('/create-employee', createEmployee);
+// Route to create a new employee - protected by JWT and HR role check
+router.post('/create-employee', protect, authorizeRoles('hr'), createEmployee);
 
+// Route to login
 router.post('/login', login);
+
+// Route to change password - protected by JWT
+router.put('/change-password', protect, changePassword);
 
 module.exports = router;

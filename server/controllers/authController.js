@@ -167,7 +167,78 @@ async function login(req, res, next) {
   }
 }
 
+/**
+ * Changes user password on first login
+ */
+async function changePassword(req, res, next) {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    // 1. Validate both fields are present
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Both current password and new password are required'
+      });
+    }
+
+    // 2. Validate password length
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password must be at least 6 characters long'
+      });
+    }
+
+    // 3. Find the user (load password hash explicitly)
+    const user = await User.findById(req.user._id).select('+password');
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+
+    // 4. Verify current password
+    const isMatch = await user.comparePassword(currentPassword);
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: 'Incorrect current password'
+      });
+    }
+
+    // 5. Prevent new password from being the same as the current password
+    const isSame = await user.comparePassword(newPassword);
+    if (isSame) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password cannot be the same as the current password'
+      });
+    }
+
+    // 6. Assign plain-text new password and reset change status flag
+    // Saving the user doc triggers the model pre-save hook to hash user.password
+    user.password = newPassword;
+    user.mustChangePassword = false;
+
+    await user.save();
+
+    // 7. Return success details without returning hash
+    return res.status(200).json({
+      success: true,
+      message: 'Password changed successfully',
+      mustChangePassword: false
+    });
+
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   createEmployee,
-  login
+  login,
+  changePassword
 };
+
