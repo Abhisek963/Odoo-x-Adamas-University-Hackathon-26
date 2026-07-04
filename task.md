@@ -1,0 +1,15 @@
+- [x] Create centralized types in `src/types/index.ts`
+- [x] Create unified `LeaveContext.tsx`
+- [x] Create Employee views (EmployeeDashboard, ApplyLeave, LeaveHistory)
+- [x] Create Admin views (AdminDashboard, Employees, LeaveRequestsPage, PayrollPage)
+- [x] Add Attachment file input field inside `LeaveForm.tsx`
+- [x] Map mock employee structures to Indian names (Priya Singh, Rahul Sharma, etc.)
+- [x] Localize emails, managers, and locations
+- [x] Update basic salary ledgers to realistic Indian monthly ranges
+- [x] Refactor currency formatting systems in table/dialog components to use Indian Rupees (₹)
+- [x] Replace DollarSign icon with IndianRupee icon beside payroll heading
+- [x] Style invalid inputs with red borders and warnings text
+- [x] Remap leave categories to Paid, Sick, and Unpaid options
+- [x] Update success toast alert in `ApplyLeave.tsx`
+- [x] Invert calendar picker indicator colors inside `index.css`
+- [x] Verify project builds with zero compilation errors

@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  
+  body {
+    font-family: var(--font-sans);
+    @apply bg-slate-900 text-slate-100 antialiased overflow-x-hidden selection:bg-indigo-500 selection:text-white;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-slate-950;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-slate-800 rounded-full hover:bg-slate-700 transition-colors;
+  }
+}
+
+@layer utilities {
+  .glass-card {
+    @apply bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 shadow-2xl;
+  }
+  
+  .glass-card-hover {
+    @apply hover:bg-slate-900/80 hover:border-slate-700/80 transition-all duration-300;
+  }
+
+  .glow-indigo {
+    @apply shadow-[0_0_15px_rgba(99,102,241,0.15)];
+  }
+
+  .glow-violet {
+    @apply shadow-[0_0_15px_rgba(139,92,246,0.15)];
+  }
+
+  .glow-emerald {
+    @apply shadow-[0_0_15px_rgba(16,185,129,0.15)];
+  }
+}
+
+/* Page transitions */
+.fade-in-slide {
+  animation: fadeInSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pulse glow for statuses */
+.status-pulse {
+  @apply relative flex h-2.5 w-2.5;
+}
+
+.status-pulse::after {
+  content: '';
+  @apply animate-ping absolute inline-flex h-full w-full rounded-full opacity-75;
+}
+
+/* Make calendar datepicker icon visible on dark background */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(0.9) contrast(1.2);
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 2px;
+  transition: all 0.2s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  background-color: rgba(99, 102, 241, 0.15);
+}
