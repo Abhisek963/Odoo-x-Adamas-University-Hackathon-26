@@ -3,6 +3,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const connectDB = require('./config/db');
 
 // Initialize the Express application
 const app = express();
@@ -53,6 +54,9 @@ app.use((err, req, res, next) => {
     stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
   });
 });
+
+// Connect to Database
+connectDB();
 
 // Start the Express server
 app.listen(PORT, () => {
